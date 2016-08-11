@@ -59,7 +59,7 @@ def _disable_pip_configuration_settings():
     os.environ['PIP_CONFIG_FILE'] = os.devnull
 
 
-def bootstrap(*, root=None, upgrade=False, user=False,
+def bootstrap(*, root=None, upgrade=False, user=False, ignore_installed=False,
               altinstall=False, default_pip=False,
               verbosity=0):
     """
@@ -112,6 +112,8 @@ def bootstrap(*, root=None, upgrade=False, user=False,
             args += ["--user"]
         if verbosity:
             args += ["-" + "v" * verbosity]
+        if ignore_installed:
+            args += ['--ignore-installed']
 
         _run_pip(args + [p[0] for p in _PROJECTS], additional_paths)
 
@@ -184,6 +186,12 @@ def _main(argv=None):
         help="Install everything relative to this alternate root directory.",
     )
     parser.add_argument(
+        "--ignore-installed",
+        action="store_true",
+        default=False,
+        help=("force install."),
+    )
+    parser.add_argument(
         "--altinstall",
         action="store_true",
         default=False,
@@ -207,4 +215,5 @@ def _main(argv=None):
         verbosity=args.verbosity,
         altinstall=args.altinstall,
         default_pip=args.default_pip,
+        ignore_installed = args.ignore_installed,
     )

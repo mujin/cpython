@@ -1030,18 +1030,18 @@ quicktest:	all platform
 install: @FRAMEWORKINSTALLFIRST@ commoninstall bininstall maninstall @FRAMEWORKINSTALLLAST@
 	if test "x$(ENSUREPIP)" != "xno"  ; then \
 		case $(ENSUREPIP) in \
-			upgrade) ensurepip="--upgrade" ;; \
-			install|*) ensurepip="" ;; \
+			upgrade) ensurepip="--upgrade --ignore-installed" ;; \
+			install|*) ensurepip="--ignore-installed" ;; \
 		esac; \
 		$(RUNSHARED) $(PYTHON_FOR_BUILD) -m ensurepip \
-			$$ensurepip --root=$(DESTDIR)/ ; \
+			$$ensurepip --root=$(DESTDIR)/; \
 	fi
 
 altinstall: commoninstall
 	if test "x$(ENSUREPIP)" != "xno"  ; then \
 		case $(ENSUREPIP) in \
-			upgrade) ensurepip="--altinstall --upgrade" ;; \
-			install|*) ensurepip="--altinstall" ;; \
+			upgrade) ensurepip="--altinstall --upgrade --ignore-installed" ;; \
+			install|*) ensurepip="--altinstall --ignore-installed" ;; \
 		esac; \
 		$(RUNSHARED) $(PYTHON_FOR_BUILD) -m ensurepip \
 			$$ensurepip --root=$(DESTDIR)/ ; \
